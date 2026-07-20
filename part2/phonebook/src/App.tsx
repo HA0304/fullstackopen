@@ -9,13 +9,22 @@ const App = () => {
 
   const addPerson = (event : any) => {
     event.preventDefault()
-    const nameobj = {
+    if (persons.some(person => person.name.toLowerCase() === newName.trim().toLowerCase())
+)
+    {
+      alert(newName+' is already in phonebook')
+      return
+    }
+    else
+    {
+      const nameobj = {
       name: newName,
       id: id
     }
     setid(id + 1)
     setPersons(persons.concat(nameobj))
     setNewName('')
+    }
   }
 
   const handleNewChange = (event: any) => {
