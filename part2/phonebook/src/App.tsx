@@ -3,10 +3,15 @@ import { useState } from 'react'
 const App = () => {
   const [id, setid] = useState(1)
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', id: 2 , num: '0333-3338888'}
+    { name: 'Arto Hellas', number: '0333-3338888', id: 1},
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
+  const [showAll, setShowAll] = useState(true)
+  const [showFilter, setShowFilter] = useState('')
 
   const addPerson = (event : any) => {
     event.preventDefault()
@@ -21,7 +26,7 @@ const App = () => {
       const nameobj = {
       name: newName,
       id: id,
-      num: newNum
+      number: newNum
     }
     setid(id + 1)
     setPersons(persons.concat(nameobj))
@@ -39,6 +44,21 @@ const App = () => {
     setNewNum(event.target.value)
   }
 
+  const handleNewFilter = (event: any) => {
+    console.log(event.target.value)
+    if (showFilter === '')
+    {
+      setShowAll(() => true)
+    }
+    else
+    {
+      setShowAll(() => false)
+    }
+    setShowFilter(event.target.value)
+  }
+
+  const toShow = showAll ? persons : persons.filter(person => person.name.startsWith(showFilter))
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -51,10 +71,15 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+      <form>
+        <div>
+          filter: <input value={showFilter} onChange={handleNewFilter}/>
+        </div>
+      </form>
       <h2>Numbers</h2>
       <div>
         <ul>
-          {persons.map((person) => (<li key={person.id}>{person.name} {person.num}</li>))}
+          {toShow.map((person) => (<li key={person.id}>{person.name} {person.number}</li>))}
         </ul>
       </div>
     </div>
